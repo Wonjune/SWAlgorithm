@@ -1,1 +1,1 @@
-#SW Algorithm Training
+# SW Algorithm Training
