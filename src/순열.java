@@ -1,7 +1,7 @@
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
 
-public class 순열 {
+public class Main {
 	//1. N의 갯수만큼 세그먼트 트리 생성
 	//2. 트리의 리프를 모두 1로 채우고 구간합 계산
 	//3. 입력 순열 순서대로 loop
@@ -17,7 +17,7 @@ public class 순열 {
 	public int[] S;
 	
 	public static void main(String[] args) {
-		순열 a = new 순열();
+		Main a = new Main();
 		
 		try {
 			BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
@@ -34,11 +34,15 @@ public class 순열 {
 			
 			for(int i=1 ; i<= a.N ; i++) {
 				a.A[i] = Integer.parseInt(br.readLine());
+			}
+			
+			for(int i=1 ; i<=a.N ; i++) {
 				int pos = a.find(a, i, a.A[i], 1, 1, a.N);
 				a.update(a, pos, 1, 1, a.N);
 			}
 			
 			for(int i : a.S) {
+				if(i==0) continue;
 				System.out.println(i);
 			}
 			
@@ -48,7 +52,7 @@ public class 순열 {
 		
 	}
 	
-	public int init(순열 a, int node, int start, int end) {
+	public int init(Main a, int node, int start, int end) {
 		if(start == end) {
 			a.tree[node] = 1;
 			return a.tree[node];
@@ -58,11 +62,11 @@ public class 순열 {
 		return a.tree[node];
 	}
 	
-	public int find(순열 a, int val, int zerocnt, int node, int start, int end) {
+	public int find(Main a, int val, int zerocnt, int node, int start, int end) {
 		if(start == end) {
 			a.tree[node] = 0;
-			a.S[node] = val;
-			return node;
+			a.S[start] = val;
+			return start;
 		}
 		
 		if(a.tree[node*2] > zerocnt) {
@@ -72,7 +76,7 @@ public class 순열 {
 		}
 	}
 	
-	public void update(순열 a, int pos, int node, int start, int end) {
+	public void update(Main a, int pos, int node, int start, int end) {
 		if(pos < start || pos > end) return;
 		a.tree[node] -= 1;
 		if(start != end) {
