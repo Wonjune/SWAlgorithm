@@ -12,38 +12,30 @@ public class 순열 {
 	//3-5. 해당 leaf의 값을 0으로 바꾸고 구간합을 재계산.
 	
 	public int N;
-	public int[] A;
 	public int[] tree;
 	public int[] S;
 	
 	public static void main(String[] args) {
 		순열 a = new 순열();
+		int MAX_N = 100000;
 		
 		try {
 			BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
 			a.N = Integer.parseInt(br.readLine());
 			
-			int NN = 1;
-			while(NN < a.N) NN *= 2;
-			a.tree = new int[NN*2+1];
-			
-			a.A = new int[a.N+1];
+			a.tree = new int[MAX_N*4];
 			a.S = new int[a.N+1];
 			
 			a.init(a, 1, 1, a.N);
 			
 			for(int i=1 ; i<= a.N ; i++) {
-				a.A[i] = Integer.parseInt(br.readLine());
+				int pos = a.find(a, i, Integer.parseInt(br.readLine()), 1, 1, a.N);
+				a.S[pos] = i;
+				a.update(a, pos, 0, 1, 1, a.N);
 			}
 			
 			for(int i=1 ; i<=a.N ; i++) {
-				int pos = a.find(a, i, a.A[i], 1, 1, a.N);
-				a.update(a, pos, 1, 1, a.N);
-			}
-			
-			for(int i : a.S) {
-				if(i==0) continue;
-				System.out.println(i);
+				System.out.println(a.S[i]);
 			}
 			
 		}catch(Exception e) {
@@ -57,31 +49,31 @@ public class 순열 {
 			a.tree[node] = 1;
 			return a.tree[node];
 		}
-		
-		a.tree[node] = init(a, node*2, start, (start+end)/2) + init(a, node*2+1, (start+end)/2+1, end);
+		int mid = (start+end)/2;
+		a.tree[node] = init(a, node*2, start, mid) + init(a, node*2+1, mid+1, end);
 		return a.tree[node];
 	}
 	
 	public int find(순열 a, int val, int zerocnt, int node, int start, int end) {
-		if(start == end) {
-			a.tree[node] = 0;
-			a.S[start] = val;
-			return start;
-		}
+		if(start == end) return start;
+		
+		int mid = (start+end)/2;
 		
 		if(a.tree[node*2] > zerocnt) {
-			return find(a, val, zerocnt, node*2, start, (start+end)/2);
+			return find(a, val, zerocnt, node*2, start, mid);
 		}else {
-			return find(a, val, zerocnt-a.tree[node*2], node*2+1, (start+end)/2+1, end);
+			return find(a, val, zerocnt-a.tree[node*2], node*2+1, mid+1, end);
 		}
 	}
 	
-	public void update(순열 a, int pos, int node, int start, int end) {
-		if(pos < start || pos > end) return;
-		a.tree[node] -= 1;
-		if(start != end) {
-			update(a, pos, node*2, start, (start+end)/2);
-			update(a, pos, node*2+1, (start+end)/2+1, end);
+	public int update(순열 a, int pos, int val, int node, int start, int end) {
+		if(pos < start || pos > end) { return a.tree[node]; }
+		if(start == end) { a.tree[node] = val;}
+		else{
+			int mid = (start+end)/2;
+			a.tree[node] = update(a, pos, val, node*2, start, mid) + update(a, pos, val, node*2+1, mid+1, end);
 		}
+		
+		return a.tree[node];
 	}
 }
