@@ -1,7 +1,7 @@
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
 
-public class Main {
+public class 순열 {
 	//1. N의 갯수만큼 세그먼트 트리 생성
 	//2. 트리의 리프를 모두 1로 채우고 구간합 계산
 	//3. 입력 순열 순서대로 loop
@@ -17,7 +17,7 @@ public class Main {
 	public int[] S;
 	
 	public static void main(String[] args) {
-		Main a = new Main();
+		순열 a = new 순열();
 		
 		try {
 			BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
@@ -52,7 +52,7 @@ public class Main {
 		
 	}
 	
-	public int init(Main a, int node, int start, int end) {
+	public int init(순열 a, int node, int start, int end) {
 		if(start == end) {
 			a.tree[node] = 1;
 			return a.tree[node];
@@ -62,7 +62,7 @@ public class Main {
 		return a.tree[node];
 	}
 	
-	public int find(Main a, int val, int zerocnt, int node, int start, int end) {
+	public int find(순열 a, int val, int zerocnt, int node, int start, int end) {
 		if(start == end) {
 			a.tree[node] = 0;
 			a.S[start] = val;
@@ -76,7 +76,7 @@ public class Main {
 		}
 	}
 	
-	public void update(Main a, int pos, int node, int start, int end) {
+	public void update(순열 a, int pos, int node, int start, int end) {
 		if(pos < start || pos > end) return;
 		a.tree[node] -= 1;
 		if(start != end) {
