@@ -1,4 +1,6 @@
 import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileInputStream;
 import java.io.InputStreamReader;
 import java.util.StringTokenizer;
 
@@ -16,7 +18,8 @@ public class 중앙값 {
 		중앙값 c = new 중앙값();
 		
 		try {
-			BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+			//BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+			BufferedReader br = new BufferedReader(new InputStreamReader(new FileInputStream(new File("c://sample_input_중앙값.txt"))));
 			StringTokenizer st = new StringTokenizer(br.readLine(), " ");
 			c.n = Integer.parseInt(st.nextToken());
 			c.k = Integer.parseInt(st.nextToken());
@@ -29,12 +32,12 @@ public class 중앙값 {
 			}
 			
 			for(int i=1 ; i<c.k ; i++) {
-				c.update(c.a[i], 1, 1, 1, c.n);
+				c.update(c.a[i], 1, 1, 1, MAX_N);
 			}
 			for(int i=c.k ; i<=c.n ; i++) {
-				c.update(c.a[i], 1, 1, 1, c.n);
-				c.res += c.query(c.k/2, 1, 1, c.n);
-				c.update(c.a[i-c.k], -1, 1, 1, c.n);
+				c.update(c.a[i], 1, 1, 1, MAX_N);
+				c.update(c.a[i-c.k], -1, 1, 1, MAX_N);
+				c.res += c.query((c.k+1)/2, 1, 1, MAX_N);
 			}
 			
 			System.out.println(c.res);
